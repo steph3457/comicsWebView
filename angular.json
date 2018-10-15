@@ -44,7 +44,8 @@
             "assets": [
               "src/favicon.ico",
               "src/assets",
-              "src/service-worker.js"
+              "src/service-worker.js",
+              "src/manifest.json"
             ],
             "styles": [
               "src/styles.scss"
