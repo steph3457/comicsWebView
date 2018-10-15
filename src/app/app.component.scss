@@ -1,0 +1,12 @@
+mat-toolbar a {
+    margin-right: 8px;
+    font-size: 24px;
+    font-weight: 400;
+    .title {
+        font-size: 32px;
+    }
+}
+
+.fill-remaining-space {
+    flex: 1 1 auto;
+}

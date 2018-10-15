@@ -1,0 +1,56 @@
+<div class="line">
+  <mat-card class="full">
+    <mat-card-header>
+      <mat-card-title>Special commands</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <button mat-raised-button color="accent" (click)="libraryService.parseComics(notificationsService)">Update
+        comics</button>
+      <button mat-raised-button color="accent" (click)="libraryService.parseIssues(notificationsService)">Update
+        issues</button>
+      <button mat-raised-button color="accent" (click)="libraryService.findExactMapping(notificationsService)">Search
+        unmapped comics in Comic Vine</button>
+      <button mat-raised-button color="accent" (click)="libraryService.updateComicsInfos(notificationsService)">Update
+        issues info with Comic Vine API</button>
+    </mat-card-content>
+  </mat-card>
+</div>
+
+<div class="line">
+  <div class="mid left">
+    <mat-card>
+      <mat-card-header>
+        <mat-card-title>Config</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <mat-form-field>
+          <input matInput [(ngModel)]="libraryService.config.comicsPath" placeholder="Comics path">
+        </mat-form-field>
+        <mat-form-field>
+          <input matInput [(ngModel)]="libraryService.config.comicVineAPI" placeholder="ComicVine API key">
+        </mat-form-field>
+      </mat-card-content>
+      <mat-card-actions>
+        <button mat-raised-button color="accent" (click)="libraryService.saveConfig(notificationsService)">Save config</button>
+      </mat-card-actions>
+    </mat-card>
+  </div>
+  <div class="mid right">
+    <mat-card>
+      <mat-card-header>
+        <mat-card-title>Create Comic</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <mat-form-field>
+          <input matInput [(ngModel)]="comicTitle" placeholder="Comic name">
+        </mat-form-field>
+        <mat-form-field>
+          <input matInput [(ngModel)]="comicYear" placeholder="Comic year">
+        </mat-form-field>
+      </mat-card-content>
+      <mat-card-actions>
+        <button mat-raised-button color="accent" (click)="createComic()">Save config</button>
+      </mat-card-actions>
+    </mat-card>
+  </div>
+</div>

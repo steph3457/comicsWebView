@@ -1,0 +1,35 @@
+.readingStatus {
+    position: relative;
+    display: inline-block;
+    min-width: 60px;
+    min-height: 50px;
+}
+
+.mat-card-title {
+    font-size: 36px;
+}
+
+div {
+    padding: 5px;
+}
+
+mat-icon {
+    vertical-align: middle;
+    padding-right: 5px;
+}
+
+.search {
+    width: 100%;
+    .mat-form-field {
+        font-size: 14px;
+        width: 95%;
+    }
+}
+
+table {
+    width: 100%;
+}
+
+.img-responsive {
+    min-width: 60px;
+}

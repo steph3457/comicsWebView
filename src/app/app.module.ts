@@ -1,18 +1,65 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { MatButtonToggleModule, MatInputModule, MatButtonModule, MatCardModule, MatTableModule, MatToolbarModule, MatBadgeModule, MatSortModule, MatIconModule, MatSelectModule } from '@angular/material';
+import { NgModule, APP_INITIALIZER } from '@angular/core';
+import { FormsModule } from "@angular/forms";
+
+import { SimpleNotificationsModule } from "angular2-notifications";
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import { HttpClientModule } from '@angular/common/http';
+import { EnvironmentService } from './environment.service';
+
+import { ComicDetailsComponent } from './comic-details/comic-details.component';
+import { ReaderComponent } from "./reader/reader.component";
+import { LibraryComponent } from "./library/library.component";
+import { ConfigComponent } from "./config/config.component";
+
+import { LibraryService } from "./library.service";
+
+
+const appInitializerFn = (environement: EnvironmentService) => {
+  return () => {
+    return environement.loadAppEnvironment();
+  }
+};
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    ReaderComponent,
+    LibraryComponent,
+    ComicDetailsComponent,
+    ConfigComponent
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule
+    BrowserAnimationsModule,
+    MatButtonModule,
+    MatButtonToggleModule,
+    MatInputModule,
+    MatCardModule,
+    MatTableModule,
+    MatToolbarModule,
+    MatBadgeModule,
+    MatSortModule,
+    MatIconModule,
+    MatSelectModule,
+    AppRoutingModule,
+    HttpClientModule,
+    FormsModule,
+    SimpleNotificationsModule.forRoot(),
   ],
-  providers: [],
-  bootstrap: [AppComponent]
+  providers: [
+    LibraryService,
+    EnvironmentService, {
+      provide: APP_INITIALIZER,
+      useFactory: appInitializerFn,
+      multi: true,
+      deps: [ EnvironmentService ]
+    }
+  ],
+  bootstrap: [ AppComponent ]
 })
 export class AppModule { }

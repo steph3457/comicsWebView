@@ -1,0 +1,61 @@
+<mat-card>
+  <mat-card-header>
+    <mat-card-title>Library</mat-card-title>
+  </mat-card-header>
+  <mat-card-content>
+    <div>
+      <mat-button-toggle-group [(ngModel)]="libraryService.filter.restriction" color="accent">
+        <mat-button-toggle mat-raised-button color="accent" value="unread">Unread</mat-button-toggle>
+        <mat-button-toggle mat-raised-button color="accent" value="missing">Missing</mat-button-toggle>
+        <mat-button-toggle mat-raised-button color="accent" value="unmapped">Unmapped</mat-button-toggle>
+        <mat-button-toggle mat-raised-button color="accent" value="inprogress">In progress</mat-button-toggle>
+      </mat-button-toggle-group>
+    </div>
+
+    <div class="search">
+      <mat-icon>search</mat-icon>
+      <mat-form-field>
+        <input matInput [(ngModel)]="libraryService.filter.search" placeholder="Filter by name...">
+      </mat-form-field>
+    </div>
+
+    <div>
+      <table matSort (matSortChange)="libraryService.sortBy($event)" mat-table [dataSource]="libraryService.getComics()"
+        class="mat-elevation-z8">
+        <ng-container matColumnDef="Image">
+          <th mat-header-cell *matHeaderCellDef> Image </th>
+          <td mat-cell *matCellDef="let comic">
+            <div class="readingStatus" matBadge="{{comic.count_of_unread_issues}}" matBadgePosition="after"
+              matBadgeColor="accent">
+              <img *ngIf="comic.image" src="{{comic.image}}" class="img-responsive">
+            </div>
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="Title">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header="title">
+            Title </th>
+          <td mat-cell *matCellDef="let comic" (click)="libraryService.displayComic(comic)"> {{comic.title}}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="Year">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header="year"> Year
+          </th>
+          <td mat-cell *matCellDef="let comic"> {{comic.year}}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="Publisher">
+          <th mat-header-cell *matHeaderCellDef> Publisher </th>
+          <td mat-cell *matCellDef="let comic"> {{comic.publisher?.name}}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="Issues">
+          <th mat-header-cell *matHeaderCellDef> #Issues </th>
+          <td mat-cell *matCellDef="let comic"> {{comic.count_of_issues}}</td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+      </table>
+    </div>
+  </mat-card-content>
+</mat-card>

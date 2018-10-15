@@ -1,0 +1,99 @@
+<mat-card>
+  <mat-card-header>
+    <mat-card-title (click)="editMode()">{{comic.title}} - {{comic.publisher?.name}} ({{comic.year}})</mat-card-title>
+    <mat-card-subtitle>
+
+      <mat-icon *ngIf="comic.finished" mat-card-image (click)="toggleFinished()">event_busy</mat-icon>
+      <mat-icon *ngIf="!comic.finished" mat-card-image (click)="toggleFinished()">event_available</mat-icon>
+
+      <div *ngIf="!edit">{{comic.comicVineId}}</div>
+      <div *ngIf="edit">
+        <mat-form-field>
+          <input matInput [(ngModel)]="comic.comicVineId" placeholder="Comic vine id">
+        </mat-form-field>
+      </div>
+      <div class="">
+        <img *ngIf="comic.image" [src]="comic.image" class="thumb description img-responsive">
+        <p [innerHTML]="comic.description"></p>
+      </div>
+    </mat-card-subtitle>
+  </mat-card-header>
+  <mat-card-content>
+
+    <div>
+      <mat-button-toggle-group [(ngModel)]="comic.filter" color="accent">
+        <mat-button-toggle mat-raised-button color="accent" value="all">All</mat-button-toggle>
+        <mat-button-toggle mat-raised-button color="accent" value="unread">Unread</mat-button-toggle>
+      </mat-button-toggle-group>
+    </div>
+
+    <div class="search">
+      <mat-icon>search</mat-icon>
+      <mat-form-field>
+        <input matInput [(ngModel)]="comic.search" placeholder="Filter by name...">
+      </mat-form-field>
+    </div>
+
+    <div>
+      <table matSort (matSortChange)="comic.sortBy($event)" mat-table [dataSource]="comic.getIssues()" class="mat-elevation-z8">
+        <ng-container matColumnDef="Image">
+          <th mat-header-cell *matHeaderCellDef> Image </th>
+          <td mat-cell *matCellDef="let issue">
+            <img *ngIf="issue.image" src="{{issue.image}}" class="thumb img-responsive">
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="Number">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header="number">
+            #Issue </th>
+          <td mat-cell *matCellDef="let issue"> {{issue.number}}</td>
+        </ng-container>
+        <ng-container matColumnDef="FileName">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header="file">
+            File name </th>
+          <td mat-cell *matCellDef="let issue" (click)="read(issue)">{{issue.file_name}}</td>
+        </ng-container>
+        <ng-container matColumnDef="Title">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header="title">
+            Title </th>
+          <td mat-cell *matCellDef="let issue">{{issue.title}}</td>
+        </ng-container>
+        <ng-container matColumnDef="Date">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header="date">
+            Date </th>
+          <td mat-cell *matCellDef="let issue">{{issue.date |date:'longDate'}}</td>
+        </ng-container>
+        <ng-container matColumnDef="Read">
+          <th mat-header-cell *matHeaderCellDef>
+            Read </th>
+          <td mat-cell *matCellDef="let issue" (click)="markRead(issue)">{{issue.readingStatus.currentPage}}/{{issue.readingStatus.pageCount}}</td>
+        </ng-container>
+        <ng-container matColumnDef="Delete">
+          <th mat-header-cell *matHeaderCellDef>
+            Delete </th>
+          <td mat-cell *matCellDef="let issue" (click)="deleteIssue(issue.id)">
+            <mat-icon>delete</mat-icon>
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="Move">
+          <th mat-header-cell *matHeaderCellDef>
+            Move </th>
+          <td mat-cell *matCellDef="let issue">
+            <mat-form-field>
+              <mat-select placeholder="Comic" [ngModel]="comic.id" (change)="updateIssueComic($event.target.value, issue.id, notificationsService)">
+                <mat-option *ngFor="let c of libraryService.getInProgressComics()" [value]="c.id">{{c.title}}
+                  ({{c.year}})</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+      </table>
+    </div>
+  </mat-card-content>
+  <mat-card-actions>
+    <button mat-raised-button color="accent" (click)="markAllRead()">Mark all read</button>
+    <button mat-raised-button color="accent" (click)="updateComicInfos()">Update Infos</button>
+  </mat-card-actions>
+</mat-card>

@@ -1,0 +1,37 @@
+img.description {
+    margin: 8px;
+    float: left;
+}
+
+img.thumb {
+    width: 100px;
+}
+
+.mat-card-title {
+    font-size: 36px;
+}
+
+div {
+    padding: 5px;
+}
+
+mat-icon {
+    vertical-align: middle;
+    padding-right: 5px;
+}
+
+.search {
+    width: 100%;
+    .mat-form-field {
+        font-size: 14px;
+        width: 95%;
+    }
+}
+
+table {
+    width: 100%;
+}
+
+.img-responsive {
+    min-width: 60px;
+}

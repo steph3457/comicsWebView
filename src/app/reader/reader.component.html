@@ -1,0 +1,19 @@
+<div (window:keydown)=navigate($event.keyCode)>
+  <ul>
+    <li *ngFor="let image of images; let i = index">
+      <div class="image" [hidden]="!isCurrentPage(i)">
+        <img [src]="getImageUrl(image)" class="img-responsive">
+      </div>
+    </li>
+  </ul>
+</div>
+<div class="previousPage" (click)="previousPage()">
+</div>
+<div class="nextPage" (click)="nextPage()">
+</div>
+<div class="back" (click)="backToComic()">
+</div>
+
+<div class="loading" [hidden]="!loading">
+  <img src="../assets/loading.gif" class="img-responsive">
+</div>

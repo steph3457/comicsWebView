@@ -1,4 +1,6 @@
 import { Component } from '@angular/core';
+import { LibraryService } from './library.service';
+import { NotificationsService } from "angular2-notifications";
 
 @Component({
   selector: 'app-root',
@@ -6,5 +8,14 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-  title = 'comicsWebView';
+  public isCollapsed: boolean = true;
+  public options = {
+    position: ["top", "right"],
+    lastOnBottom: false
+  };
+  constructor(private libraryService: LibraryService, public notificationsService: NotificationsService) {
+  }
+  public get menuIcon(): string {
+    return this.isCollapsed ? '☰' : '✖';
+  }
 }

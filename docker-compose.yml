@@ -1,0 +1,9 @@
+version: '3'
+
+services:
+  comicswebview:
+    build: .
+    ports:
+      - "9000:9000"
+    volumes:
+      - ./src/assets/environment.json:/app/assets/environment.json
