@@ -17,6 +17,8 @@ import { LibraryComponent } from "./library/library.component";
 import { ConfigComponent } from "./config/config.component";
 
 import { LibraryService } from "./library.service";
+import { ServiceWorkerModule } from '@angular/service-worker';
+import { environment } from '../environments/environment';
 
 
 const appInitializerFn = (environement: EnvironmentService) => {
@@ -50,6 +52,7 @@ const appInitializerFn = (environement: EnvironmentService) => {
     HttpClientModule,
     FormsModule,
     SimpleNotificationsModule.forRoot(),
+    ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production }),
   ],
   providers: [
     LibraryService,

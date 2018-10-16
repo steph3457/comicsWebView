@@ -16,7 +16,7 @@ RUN yarn build --prod
 FROM nginx:alpine
 
 RUN rm -rf /usr/share/nginx/html/*
-COPY --from=node /app/dist/comicsWebView /app
+COPY --from=node /app/dist /app
 COPY gzip.conf /etc/nginx/gzip.conf
 COPY nginx.conf /etc/nginx/nginx.conf
 EXPOSE 9000
