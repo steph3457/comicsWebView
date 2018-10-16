@@ -59,6 +59,15 @@
             #Issue </th>
           <td mat-cell *matCellDef="let issue"> {{issue.number}}</td>
         </ng-container>
+        <ng-container matColumnDef="EditNumber">
+          <th mat-header-cell *matHeaderCellDef>
+            #Issue </th>
+          <td mat-cell *matCellDef="let issue">
+            <mat-form-field>
+              <input matInput value="{{issue.number}}" placeholder="Issue number" (change)="updateIssueNumber($event.target.value, issue.id, notificationsService)">
+            </mat-form-field>
+          </td>
+        </ng-container>
         <ng-container matColumnDef="FileName">
           <th mat-header-cell *matHeaderCellDef mat-sort-header="file">
             File name </th>

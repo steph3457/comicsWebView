@@ -10,15 +10,15 @@ import { HttpClient } from "@angular/common/http";
 @Component({
   selector: 'app-comic-details',
   templateUrl: './comic-details.component.html',
-  styleUrls: [ './comic-details.component.scss' ]
+  styleUrls: ['./comic-details.component.scss']
 })
 export class ComicDetailsComponent implements OnInit {
 
-  displayedColumns: string[] = [ 'Image', "Number", "FileName", 'Title', 'Date', 'Read' ];
+  displayedColumns: string[] = ['Image', "Number", "FileName", 'Title', 'Date', 'Read'];
 
   edit: boolean = false;
   comic: Comic = new Comic(null);
-  constructor (
+  constructor(
     public libraryService: LibraryService,
     public notificationsService: NotificationsService,
     private route: ActivatedRoute,
@@ -29,10 +29,10 @@ export class ComicDetailsComponent implements OnInit {
   editMode() {
     this.edit = !this.edit;
     if (this.edit) {
-      this.displayedColumns = [ 'Image', "Number", "Move", 'Title', 'Date', "Read", "Delete" ];
+      this.displayedColumns = ['Image', "EditNumber", "Move", 'Title', 'Date', "Read", "Delete"];
     }
     else {
-      this.displayedColumns = [ 'Image', "Number", "FileName", 'Title', 'Date', 'Read' ];
+      this.displayedColumns = ['Image', "Number", "FileName", 'Title', 'Date', 'Read'];
       this.updateComicVineId();
     }
   }
@@ -40,13 +40,13 @@ export class ComicDetailsComponent implements OnInit {
   read(issue: Issue) {
     if (issue.possessed && !this.edit) {
       this.libraryService.readingStatus = issue.readingStatus;
-      this.router.navigate([ '/reader', issue.id ]);
+      this.router.navigate(['/reader', issue.id]);
     }
   }
 
   markAllRead() {
     for (let issueId in this.comic.issues) {
-      let issue = this.comic.issues[ issueId ];
+      let issue = this.comic.issues[issueId];
       this.markRead(issue);
     }
   }
@@ -91,8 +91,8 @@ export class ComicDetailsComponent implements OnInit {
     this.http.delete(this.libraryService.backend + '/api/issue/' + issueId).subscribe(res => {
       this.notificationsService.remove(notif.id);
       for (let issueIndex in this.comic.issues) {
-        if (this.comic.issues[ issueIndex ].id === issueId) {
-          delete this.comic.issues[ issueIndex ];
+        if (this.comic.issues[issueIndex].id === issueId) {
+          delete this.comic.issues[issueIndex];
         }
       }
       this.notificationsService.success("Delete issue", "complete", { timeOut: 1000 });
@@ -117,8 +117,8 @@ export class ComicDetailsComponent implements OnInit {
         notificationsService.remove(notif.id);
         if (requestResponse.status === "success") {
           for (let issueIndex in this.comic.issues) {
-            if (this.comic.issues[ issueIndex ].id === issueId) {
-              delete this.comic.issues[ issueIndex ];
+            if (this.comic.issues[issueIndex].id === issueId) {
+              delete this.comic.issues[issueIndex];
             }
           }
           notificationsService.success("Update issue comic", requestResponse.message, {
@@ -127,6 +127,35 @@ export class ComicDetailsComponent implements OnInit {
         }
         else {
           notificationsService.error("Update issue comic", requestResponse.message, {
+            timeOut: 2000
+          });
+        }
+      });
+  }
+  updateIssueNumber(issueNumber, issueId, notificationsService: NotificationsService) {
+    let notif = notificationsService.info(
+      "Update issue number",
+      "pending..."
+    );
+    this.http
+      .post(this.libraryService.backend + "/api/issue/" + issueId + "/updateNumber", {
+        issueNumber: issueNumber
+      })
+      .subscribe(res => {
+        let requestResponse = res as RequestResponse;
+        notificationsService.remove(notif.id);
+        if (requestResponse.status === "success") {
+          for (let issueIndex in this.comic.issues) {
+            if (this.comic.issues[issueIndex].id === issueId) {
+              this.comic.issues[issueIndex].number = issueNumber;
+            }
+          }
+          notificationsService.success("Update issue number", requestResponse.message, {
+            timeOut: 2000
+          });
+        }
+        else {
+          notificationsService.error("Update issue number", requestResponse.message, {
             timeOut: 2000
           });
         }
