@@ -26,7 +26,7 @@ export class ComicDetailsComponent implements OnInit {
     private router: Router
   ) { }
 
-  toggleEditMode(edit: boolean) {
+  toggleEditMode() {
     this.edit = !this.edit;
     if (this.edit) {
       this.displayedColumns = ['Image', "EditNumber", "Move", 'Title', 'Date', "Read", "Delete"];
