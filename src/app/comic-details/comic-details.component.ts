@@ -26,14 +26,13 @@ export class ComicDetailsComponent implements OnInit {
     private router: Router
   ) { }
 
-  editMode() {
+  toggleEditMode(edit: boolean) {
     this.edit = !this.edit;
     if (this.edit) {
       this.displayedColumns = ['Image', "EditNumber", "Move", 'Title', 'Date', "Read", "Delete"];
     }
     else {
       this.displayedColumns = ['Image', "Number", "FileName", 'Title', 'Date', 'Read'];
-      this.updateComicVineId();
     }
   }
 

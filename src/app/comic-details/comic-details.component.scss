@@ -11,13 +11,15 @@ img.thumb {
     font-size: 36px;
 }
 
-div {
-    padding: 5px;
+.mat-card-header-text {
+    width: 100%;
 }
 
-mat-icon {
-    vertical-align: middle;
-    padding-right: 5px;
+.mat-card-content {
+    mat-icon {
+        vertical-align: middle;
+        padding-right: 5px;
+    }
 }
 
 .search {
@@ -34,4 +36,14 @@ table {
 
 .img-responsive {
     min-width: 60px;
+}
+
+.edit {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+}
+
+div {
+    margin-bottom: 10px;
 }

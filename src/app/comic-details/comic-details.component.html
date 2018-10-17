@@ -1,36 +1,39 @@
 <mat-card>
+  <button class="edit" mat-fab (click)="toggleEditMode()">
+    <mat-icon *ngIf="!edit">settings</mat-icon>
+    <mat-icon *ngIf="edit">save</mat-icon>
+  </button>
   <mat-card-header>
-    <mat-card-title (click)="editMode()">{{comic.title}} - {{comic.publisher?.name}} ({{comic.year}})</mat-card-title>
+    <mat-card-title>{{comic.title}} - {{comic.publisher?.name}} ({{comic.year}})</mat-card-title>
     <mat-card-subtitle>
-
       <mat-icon *ngIf="comic.finished" mat-card-image (click)="toggleFinished()">event_busy</mat-icon>
       <mat-icon *ngIf="!comic.finished" mat-card-image (click)="toggleFinished()">event_available</mat-icon>
 
-      <mat-accordion>
+      <div *ngIf="edit">
+        <mat-form-field>
+          <input matInput [(ngModel)]="comic.comicVineId" placeholder="Comic vine id" (change)="updateComicVineId()">
+        </mat-form-field>
+      </div>
+    </mat-card-subtitle>
+  </mat-card-header>
+  <mat-card-content>
+
+    <div>
+      <mat-accordion *ngIf="!edit">
         <mat-expansion-panel>
           <mat-expansion-panel-header>
             <mat-panel-title>
               Description
             </mat-panel-title>
-            <mat-panel-description>
-            </mat-panel-description>
           </mat-expansion-panel-header>
-
-          <div *ngIf="!edit">{{comic.comicVineId}}</div>
-          <div *ngIf="edit">
-            <mat-form-field>
-              <input matInput [(ngModel)]="comic.comicVineId" placeholder="Comic vine id">
-            </mat-form-field>
-          </div>
+          <div>{{comic.comicVineId}}</div>
           <div class="">
             <img *ngIf="comic.image" [src]="comic.image" class="thumb description img-responsive">
             <p [innerHTML]="comic.description"></p>
           </div>
         </mat-expansion-panel>
       </mat-accordion>
-    </mat-card-subtitle>
-  </mat-card-header>
-  <mat-card-content>
+    </div>
 
     <div>
       <mat-button-toggle-group [(ngModel)]="comic.filter" color="accent">
