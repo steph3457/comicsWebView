@@ -76,10 +76,11 @@ export class ComicDetailsComponent implements OnInit {
       });
     }
   }
-  toggleFinished() {
+
+  setFinished(finished: boolean) {
     let notif = this.notificationsService.info("Update comic finished", "pending...");
-    this.http.get(this.libraryService.backend + '/api/comic/' + this.comic.id + '/toggleFinished').subscribe(res => {
-      this.comic.finished = !this.comic.finished;
+    this.http.post(this.libraryService.backend + '/api/comic/' + this.comic.id + '/updateFinished', { finished: finished }).subscribe(res => {
+      this.comic = new Comic(res as Comic);
       this.notificationsService.remove(notif.id);
       this.notificationsService.success("Update comic finished", "complete", { timeOut: 2000 });
     });

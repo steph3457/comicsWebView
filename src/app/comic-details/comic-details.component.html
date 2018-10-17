@@ -4,22 +4,36 @@
     <mat-icon *ngIf="edit">save</mat-icon>
   </button>
   <mat-card-header>
-    <mat-card-title>{{comic.title}} - {{comic.publisher?.name}} ({{comic.year}})</mat-card-title>
+    <mat-card-title>
+      {{comic.title}} - {{comic.publisher?.name}} ({{comic.year}})
+      <mat-icon *ngIf="comic.finished" color="primary">event_busy</mat-icon>
+      <mat-icon *ngIf="!comic.finished" color="primary">event_available</mat-icon>
+    </mat-card-title>
     <mat-card-subtitle>
-      <mat-icon *ngIf="comic.finished" mat-card-image (click)="toggleFinished()">event_busy</mat-icon>
-      <mat-icon *ngIf="!comic.finished" mat-card-image (click)="toggleFinished()">event_available</mat-icon>
 
       <div *ngIf="edit">
         <mat-form-field>
           <input matInput [(ngModel)]="comic.comicVineId" placeholder="Comic vine id" (change)="updateComicVineId()">
         </mat-form-field>
+        <div>
+          Status :
+          <mat-button-toggle-group color="accent">
+            <mat-button-toggle mat-raised-button [checked]="comic.finished" (change)="setFinished($event.source.checked)">
+              <mat-icon>event_busy</mat-icon>
+            </mat-button-toggle>
+            <mat-button-toggle mat-raised-button [checked]="!comic.finished" (change)="setFinished(!$event.source.checked)">
+              <mat-icon>event_available</mat-icon>
+            </mat-button-toggle>
+          </mat-button-toggle-group>
+        </div>
       </div>
     </mat-card-subtitle>
   </mat-card-header>
   <mat-card-content>
 
     <div>
-      <mat-accordion *ngIf="!edit">
+      <mat-accordion *ngIf="
+              !edit">
         <mat-expansion-panel>
           <mat-expansion-panel-header>
             <mat-panel-title>
