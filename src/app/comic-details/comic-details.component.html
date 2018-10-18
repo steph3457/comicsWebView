@@ -32,8 +32,7 @@
   <mat-card-content>
 
     <div>
-      <mat-accordion *ngIf="
-              !edit">
+      <mat-accordion *ngIf="!edit">
         <mat-expansion-panel>
           <mat-expansion-panel-header>
             <mat-panel-title>
@@ -117,7 +116,7 @@
             Move </th>
           <td mat-cell *matCellDef="let issue">
             <mat-form-field>
-              <mat-select placeholder="Comic" [ngModel]="comic.id" (change)="updateIssueComic($event.target.value, issue.id, notificationsService)">
+              <mat-select placeholder="Comic" [(ngModel)]="comic.id" (selectionChange)="updateIssueComic($event.value, issue.id, notificationsService)">
                 <mat-option *ngFor="let c of libraryService.getInProgressComics()" [value]="c.id">{{c.title}}
                   ({{c.year}})</mat-option>
               </mat-select>

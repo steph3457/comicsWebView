@@ -52,7 +52,7 @@ export class ComicDetailsComponent implements OnInit {
   markRead(issue: Issue) {
     let notif = this.notificationsService.info("Mark comic as read", "pending...");
     issue.readingStatus.read = !issue.readingStatus.read;
-    this.http.post('/api/readingStatus', issue.readingStatus).subscribe(res => {
+    this.http.post(this.libraryService.backend + '/api/readingStatus', issue.readingStatus).subscribe(res => {
       this.notificationsService.remove(notif.id);
       this.notificationsService.success("Mark comic as read", "complete", { timeOut: 2000 });
     });
@@ -99,15 +99,8 @@ export class ComicDetailsComponent implements OnInit {
     });
   }
 
-  updateIssueComic(
-    comicId,
-    issueId,
-    notificationsService: NotificationsService
-  ) {
-    let notif = notificationsService.info(
-      "Update issue comic",
-      "pending..."
-    );
+  updateIssueComic(comicId, issueId, notificationsService: NotificationsService) {
+    let notif = notificationsService.info("Update issue comic", "pending...");
     this.http
       .post(this.libraryService.backend + "/api/issue/" + issueId + "/updateComic", {
         comicId: comicId
