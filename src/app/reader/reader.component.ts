@@ -8,7 +8,7 @@ import { HttpClient } from "@angular/common/http";
 @Component({
   selector: 'app-reader',
   templateUrl: './reader.component.html',
-  styleUrls: [ './reader.component.scss' ]
+  styleUrls: ['./reader.component.scss']
 })
 export class ReaderComponent implements OnInit {
 
@@ -16,7 +16,7 @@ export class ReaderComponent implements OnInit {
   loading: boolean = true;
   images: string[] = [];
   readingStatus: ReadingStatus = new ReadingStatus(null);
-  constructor (
+  constructor(
     public libraryService: LibraryService,
     private location: Location,
     private route: ActivatedRoute,
