@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { LibraryService } from '../library.service';
-import { NotificationsService } from "angular2-notifications";
 import { ActivatedRoute, Router } from '@angular/router';
 import { Comic } from '../../lib/Comic';
 import { Issue } from '../../lib/Issue';
 import { HttpClient } from "@angular/common/http";
+import { MatSnackBar } from '@angular/material';
 
 
 @Component({
@@ -20,10 +20,10 @@ export class ComicDetailsComponent implements OnInit {
   comic: Comic = new Comic(null);
   constructor(
     public libraryService: LibraryService,
-    public notificationsService: NotificationsService,
     private route: ActivatedRoute,
     private http: HttpClient,
-    private router: Router
+    private router: Router,
+    public snackBar: MatSnackBar
   ) { }
 
   toggleEditMode() {
@@ -50,107 +50,89 @@ export class ComicDetailsComponent implements OnInit {
     }
   }
   markRead(issue: Issue) {
-    let notif = this.notificationsService.info("Mark comic as read", "pending...");
+    this.snackBar.open("Mark comic as read", "pending...", { verticalPosition: "top" });
     issue.readingStatus.read = !issue.readingStatus.read;
     this.http.post(this.libraryService.backend + '/api/readingStatus', issue.readingStatus).subscribe(res => {
-      this.notificationsService.remove(notif.id);
-      this.notificationsService.success("Mark comic as read", "complete", { timeOut: 2000 });
+      this.snackBar.open("Mark comic as read", "complete", { verticalPosition: "top", duration: 2000 });
     });
   }
 
   updateComicInfos() {
-    let notif = this.notificationsService.info("Update comic infos", "pending...");
+    this.snackBar.open("Update comic infos", "pending...", { verticalPosition: "top" });
     this.http.get(this.libraryService.backend + '/api/comic/' + this.comic.id + '/updateInfos').subscribe(res => {
       this.comic = new Comic(res as Comic);
-      this.notificationsService.remove(notif.id);
-      this.notificationsService.success("Update comic infos", "complete", { timeOut: 2000 });
+      this.snackBar.open("Update comic infos", "complete", { verticalPosition: "top", duration: 2000 });
     });
   }
   updateComicVineId() {
-    let notif = this.notificationsService.info("Update comic infos", "pending...");
+    this.snackBar.open("Update comic infos", "pending...", { verticalPosition: "top" });
     if (this.comic.comicVineId) {
       this.http.post(this.libraryService.backend + '/api/comic/' + this.comic.id + '/updateComicVineId', { comicVineId: this.comic.comicVineId }).subscribe(res => {
         this.comic = new Comic(res as Comic);
-        this.notificationsService.remove(notif.id);
-        this.notificationsService.success("Update comic infos", "complete", { timeOut: 2000 });
+        this.snackBar.open("Update comic infos", "complete", { verticalPosition: "top", duration: 2000 });
       });
     }
   }
 
   setFinished(finished: boolean) {
-    let notif = this.notificationsService.info("Update comic finished", "pending...");
+    this.snackBar.open("Update comic finished", "pending...", { verticalPosition: "top" });
     this.http.post(this.libraryService.backend + '/api/comic/' + this.comic.id + '/updateFinished', { finished: finished }).subscribe(res => {
       this.comic = new Comic(res as Comic);
-      this.notificationsService.remove(notif.id);
-      this.notificationsService.success("Update comic finished", "complete", { timeOut: 2000 });
+      this.snackBar.open("Update comic finished", "complete", { verticalPosition: "top", duration: 2000 });
     });
   }
 
   deleteIssue(issueId) {
-    let notif = this.notificationsService.info("Delete issue", "pending...");
+    this.snackBar.open("Delete issue", "pending...", { verticalPosition: "top" });
     this.http.delete(this.libraryService.backend + '/api/issue/' + issueId).subscribe(res => {
-      this.notificationsService.remove(notif.id);
       for (let issueIndex in this.comic.issues) {
         if (this.comic.issues[issueIndex].id === issueId) {
           delete this.comic.issues[issueIndex];
         }
       }
-      this.notificationsService.success("Delete issue", "complete", { timeOut: 1000 });
+      this.snackBar.open("Delete issue", "complete", { verticalPosition: "top", duration: 2000 });
     });
   }
 
-  updateIssueComic(comicId, issueId, notificationsService: NotificationsService) {
-    let notif = notificationsService.info("Update issue comic", "pending...");
+  updateIssueComic(comicId, issueId) {
+    this.snackBar.open("Update issue comic", "pending...", { verticalPosition: "top" });
     this.http
       .post(this.libraryService.backend + "/api/issue/" + issueId + "/updateComic", {
         comicId: comicId
       })
       .subscribe(res => {
         let requestResponse = res as RequestResponse;
-        notificationsService.remove(notif.id);
         if (requestResponse.status === "success") {
           for (let issueIndex in this.comic.issues) {
             if (this.comic.issues[issueIndex].id === issueId) {
               delete this.comic.issues[issueIndex];
             }
           }
-          notificationsService.success("Update issue comic", requestResponse.message, {
-            timeOut: 2000
-          });
+          this.snackBar.open("Update issue comic", requestResponse.message, { verticalPosition: "top", duration: 2000 });
         }
         else {
-          notificationsService.error("Update issue comic", requestResponse.message, {
-            timeOut: 2000
-          });
+          this.snackBar.open("Update issue comic", requestResponse.message, { verticalPosition: "top", duration: 2000 });
         }
       });
   }
-  updateIssueNumber(issueNumber, issueId, notificationsService: NotificationsService) {
-    let notif = notificationsService.info(
-      "Update issue number",
-      "pending..."
-    );
+  updateIssueNumber(issueNumber, issueId) {
+    this.snackBar.open("Update issue number", "pending...", { verticalPosition: "top" });
     this.http
       .post(this.libraryService.backend + "/api/issue/" + issueId + "/updateNumber", {
         issueNumber: issueNumber
       })
       .subscribe(res => {
         let requestResponse = res as RequestResponse;
-        notificationsService.remove(notif.id);
         if (requestResponse.status === "success") {
           for (let issueIndex in this.comic.issues) {
             if (this.comic.issues[issueIndex].id === issueId) {
               this.comic.issues[issueIndex].number = issueNumber;
             }
           }
-          notificationsService.success("Update issue number", requestResponse.message, {
-            timeOut: 2000
-          });
+          this.snackBar.open("Update issue number", requestResponse.message, { verticalPosition: "top", duration: 2000 });
         }
         else {
-          notificationsService.error("Update issue number", requestResponse.message, {
-            timeOut: 2000
-          });
+          this.snackBar.open("Update issue number", requestResponse.message, { verticalPosition: "top", duration: 2000 });
         }
       });
   }

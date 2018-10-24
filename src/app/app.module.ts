@@ -1,10 +1,8 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { MatButtonToggleModule, MatInputModule, MatButtonModule, MatCardModule, MatTableModule, MatToolbarModule, MatBadgeModule, MatSortModule, MatIconModule, MatSelectModule, MatExpansionModule } from '@angular/material';
+import { MatButtonToggleModule, MatInputModule, MatButtonModule, MatCardModule, MatTableModule, MatToolbarModule, MatBadgeModule, MatSortModule, MatIconModule, MatSelectModule, MatExpansionModule, MatSnackBarModule } from '@angular/material';
 import { NgModule, APP_INITIALIZER } from '@angular/core';
 import { FormsModule } from "@angular/forms";
-
-import { SimpleNotificationsModule } from "angular2-notifications";
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -49,10 +47,10 @@ const appInitializerFn = (environement: EnvironmentService) => {
     MatIconModule,
     MatSelectModule,
     MatExpansionModule,
+    MatSnackBarModule,
     AppRoutingModule,
     HttpClientModule,
     FormsModule,
-    SimpleNotificationsModule.forRoot(),
     ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production }),
   ],
   providers: [
@@ -61,9 +59,9 @@ const appInitializerFn = (environement: EnvironmentService) => {
       provide: APP_INITIALIZER,
       useFactory: appInitializerFn,
       multi: true,
-      deps: [ EnvironmentService ]
+      deps: [EnvironmentService]
     }
   ],
-  bootstrap: [ AppComponent ]
+  bootstrap: [AppComponent]
 })
 export class AppModule { }

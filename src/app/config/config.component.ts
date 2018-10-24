@@ -1,32 +1,29 @@
 import { Form } from "@angular/forms";
 import { Component, OnInit } from "@angular/core";
 import { LibraryService } from "src/app/library.service";
-import { NotificationsService } from "angular2-notifications";
 import { HttpClient } from "@angular/common/http";
 import { Comic } from "src/lib/Comic";
+import { MatSnackBar } from "@angular/material";
 
 @Component({
     selector: "app-config",
     templateUrl: "./config.component.html",
-    styleUrls: [ "./config.component.scss" ]
+    styleUrls: ["./config.component.scss"]
 })
 export class ConfigComponent implements OnInit {
     comicTitle: string;
     comicYear: string;
 
-    constructor (
+    constructor(
         public libraryService: LibraryService,
-        public notificationsService: NotificationsService,
-        private http: HttpClient
+        private http: HttpClient,
+        public snackBar: MatSnackBar
     ) { }
 
     ngOnInit() { }
 
     createComic() {
-        let notif = this.notificationsService.info(
-            "Creating comic",
-            "pending..."
-        );
+        this.snackBar.open("Creating comic", "pending...", { verticalPosition: "top" });
         this.http
             .post(this.libraryService.backend + "/api/comics/create", {
                 comicTitle: this.comicTitle,
@@ -34,10 +31,7 @@ export class ConfigComponent implements OnInit {
             })
             .subscribe(res => {
                 this.libraryService.comics = res as Comic[];
-                this.notificationsService.remove(notif.id);
-                this.notificationsService.success("Comic created", "complete", {
-                    timeOut: 2000
-                });
+                this.snackBar.open("Comic created", "complete", { verticalPosition: "top", duration: 2000 });
             });
     }
 }
