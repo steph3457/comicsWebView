@@ -5,6 +5,7 @@ import { Comic } from '../../lib/Comic';
 import { Issue } from '../../lib/Issue';
 import { HttpClient } from "@angular/common/http";
 import { MatSnackBar } from '@angular/material';
+import { ReadingStatus } from 'src/lib/ReadingStatus';
 
 
 @Component({
@@ -135,6 +136,15 @@ export class ComicDetailsComponent implements OnInit {
           this.snackBar.open("Update issue number", requestResponse.message, { verticalPosition: "top", duration: 2000 });
         }
       });
+  }
+  getSpinnerProgress(readingStatus: ReadingStatus) {
+    if (readingStatus.read) {
+      return 100;
+    }
+    if (readingStatus.pageCount > 0) {
+      return (readingStatus.currentPage / readingStatus.pageCount) * 100;
+    }
+    return 0;
   }
 
   ngOnInit() {

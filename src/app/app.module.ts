@@ -1,6 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { MatButtonToggleModule, MatInputModule, MatButtonModule, MatCardModule, MatTableModule, MatToolbarModule, MatBadgeModule, MatSortModule, MatIconModule, MatSelectModule, MatExpansionModule, MatSnackBarModule } from '@angular/material';
+import { MatButtonToggleModule, MatInputModule, MatButtonModule, MatCardModule, MatTableModule, MatToolbarModule, MatBadgeModule, MatSortModule, MatIconModule, MatSelectModule, MatExpansionModule, MatSnackBarModule, MatProgressSpinnerModule, MatTooltipModule } from '@angular/material';
 import { NgModule, APP_INITIALIZER } from '@angular/core';
 import { FormsModule } from "@angular/forms";
 
@@ -48,6 +48,8 @@ const appInitializerFn = (environement: EnvironmentService) => {
     MatSelectModule,
     MatExpansionModule,
     MatSnackBarModule,
+    MatProgressSpinnerModule,
+    MatTooltipModule,
     AppRoutingModule,
     HttpClientModule,
     FormsModule,
